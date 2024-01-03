@@ -1,4 +1,4 @@
-module ecom
+module github.com/JMURv/protos
 
 go 1.21.4
 
