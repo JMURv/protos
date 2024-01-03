@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package review;
 
-option go_package = "./review";
+option go_package = "github.com/JMURv/protos/ecom/review";
 
 import "ecom/common/common.proto";
 

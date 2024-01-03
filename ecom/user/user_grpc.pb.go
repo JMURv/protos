@@ -7,8 +7,8 @@
 package user
 
 import (
-	common "./common"
 	context "context"
+	common "github.com/JMURv/protos/ecom/common"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
