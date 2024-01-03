@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package favorite;
 
-option go_package = "./ecom/favorite";
+option go_package = "github.com/JMURv/protos/ecom/favorite";
 
 import "ecom/common/common.proto";
 

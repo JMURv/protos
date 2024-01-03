@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common;
 
-option go_package = "./ecom/common";
+option go_package = "github.com/JMURv/protos/ecom/common";
 
 import "google/protobuf/timestamp.proto";
 
