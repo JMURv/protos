@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./ecom/user";
+
+import "ecom/common/common.proto";
+
+message EmptyRequest {}
+message EmptyResponse {}
+
+service UserService {
+  rpc ListUser (EmptyRequest) returns (ListUserResponse) {}
+  rpc GetUserByID (GetUserByIDRequest) returns (common.User) {}
+  rpc GetUserByEmail (GetUserByEmailRequest) returns (common.User) {}
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
+  rpc UpdateUser (UpdateUserRequest) returns (common.User) {}
+  rpc DeleteUser (DeleteUserRequest) returns (EmptyResponse) {}
+}
+
+message ListUserResponse {
+  repeated common.User users = 1;
+}
+
+message GetUserByIDRequest {
+  uint64 user_id = 1;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+}
+
+message CreateUserResponse {
+  common.User user = 1;
+  string token = 2;
+  string error_message = 3;
+}
+
+message UpdateUserRequest {
+  uint64 user_id = 1;
+  common.User new_data = 2;
+}
+
+message UpdateUserResponse {
+  common.User user = 1;
+  string error_message = 2;
+}
+
+message DeleteUserRequest {
+  uint64 user_id = 1;
+}
