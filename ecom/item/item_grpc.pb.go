@@ -7,7 +7,7 @@
 package item
 
 import (
-	common "./ecom/common"
+	common "./common"
 	context "context"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
