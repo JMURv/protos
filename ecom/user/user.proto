@@ -14,7 +14,7 @@ service UserService {
   rpc GetUserByID (GetUserByIDRequest) returns (common.User) {}
   rpc GetUserByEmail (GetUserByEmailRequest) returns (common.User) {}
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
-  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {}
+  rpc UpdateUser (UpdateUserRequest) returns (common.User) {}
   rpc DeleteUser (DeleteUserRequest) returns (EmptyResponse) {}
 }
 
@@ -45,11 +45,6 @@ message UpdateUserRequest {
   uint64 user_id = 1;
   string username = 2;
   string email = 3;
-}
-
-message UpdateUserResponse {
-  common.User user = 1;
-  string error_message = 2;
 }
 
 message DeleteUserRequest {

@@ -33,8 +33,8 @@ const (
 type ItemServiceClient interface {
 	ListItem(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*ListItemResponse, error)
 	GetItemByID(ctx context.Context, in *GetItemByIDRequest, opts ...grpc.CallOption) (*common.Item, error)
-	CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*CreateItemResponse, error)
-	UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*UpdateItemResponse, error)
+	CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*common.Item, error)
+	UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*common.Item, error)
 	DeleteItem(ctx context.Context, in *DeleteItemRequest, opts ...grpc.CallOption) (*EmptyResponse, error)
 }
 
@@ -64,8 +64,8 @@ func (c *itemServiceClient) GetItemByID(ctx context.Context, in *GetItemByIDRequ
 	return out, nil
 }
 
-func (c *itemServiceClient) CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*CreateItemResponse, error) {
-	out := new(CreateItemResponse)
+func (c *itemServiceClient) CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*common.Item, error) {
+	out := new(common.Item)
 	err := c.cc.Invoke(ctx, ItemService_CreateItem_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -73,8 +73,8 @@ func (c *itemServiceClient) CreateItem(ctx context.Context, in *CreateItemReques
 	return out, nil
 }
 
-func (c *itemServiceClient) UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*UpdateItemResponse, error) {
-	out := new(UpdateItemResponse)
+func (c *itemServiceClient) UpdateItem(ctx context.Context, in *UpdateItemRequest, opts ...grpc.CallOption) (*common.Item, error) {
+	out := new(common.Item)
 	err := c.cc.Invoke(ctx, ItemService_UpdateItem_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -97,8 +97,8 @@ func (c *itemServiceClient) DeleteItem(ctx context.Context, in *DeleteItemReques
 type ItemServiceServer interface {
 	ListItem(context.Context, *EmptyRequest) (*ListItemResponse, error)
 	GetItemByID(context.Context, *GetItemByIDRequest) (*common.Item, error)
-	CreateItem(context.Context, *CreateItemRequest) (*CreateItemResponse, error)
-	UpdateItem(context.Context, *UpdateItemRequest) (*UpdateItemResponse, error)
+	CreateItem(context.Context, *CreateItemRequest) (*common.Item, error)
+	UpdateItem(context.Context, *UpdateItemRequest) (*common.Item, error)
 	DeleteItem(context.Context, *DeleteItemRequest) (*EmptyResponse, error)
 	mustEmbedUnimplementedItemServiceServer()
 }
@@ -113,10 +113,10 @@ func (UnimplementedItemServiceServer) ListItem(context.Context, *EmptyRequest) (
 func (UnimplementedItemServiceServer) GetItemByID(context.Context, *GetItemByIDRequest) (*common.Item, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetItemByID not implemented")
 }
-func (UnimplementedItemServiceServer) CreateItem(context.Context, *CreateItemRequest) (*CreateItemResponse, error) {
+func (UnimplementedItemServiceServer) CreateItem(context.Context, *CreateItemRequest) (*common.Item, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateItem not implemented")
 }
-func (UnimplementedItemServiceServer) UpdateItem(context.Context, *UpdateItemRequest) (*UpdateItemResponse, error) {
+func (UnimplementedItemServiceServer) UpdateItem(context.Context, *UpdateItemRequest) (*common.Item, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateItem not implemented")
 }
 func (UnimplementedItemServiceServer) DeleteItem(context.Context, *DeleteItemRequest) (*EmptyResponse, error) {

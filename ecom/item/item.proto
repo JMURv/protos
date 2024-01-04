@@ -12,8 +12,8 @@ message EmptyResponse {}
 service ItemService {
   rpc ListItem (EmptyRequest) returns (ListItemResponse) {}
   rpc GetItemByID (GetItemByIDRequest) returns (common.Item) {}
-  rpc CreateItem (CreateItemRequest) returns (CreateItemResponse) {}
-  rpc UpdateItem (UpdateItemRequest) returns (UpdateItemResponse) {}
+  rpc CreateItem (CreateItemRequest) returns (common.Item) {}
+  rpc UpdateItem (UpdateItemRequest) returns (common.Item) {}
   rpc DeleteItem (DeleteItemRequest) returns (EmptyResponse) {}
 }
 
@@ -35,19 +35,15 @@ message CreateItemRequest {
   int32 quantity = 7;
 }
 
-message CreateItemResponse {
-  common.Item item = 1;
-  string error_message = 2;
-}
-
 message UpdateItemRequest {
   uint64 item_id = 1;
-  common.Item new_data = 2;
-}
-
-message UpdateItemResponse {
-  common.Item item = 1;
-  string error_message = 2;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  uint64 category_id = 5;
+  uint64 user_id = 6;
+  repeated common.Tag tags = 7;
+  int32 quantity = 8;
 }
 
 message DeleteItemRequest {
