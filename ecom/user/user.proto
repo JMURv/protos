@@ -43,7 +43,8 @@ message CreateUserResponse {
 
 message UpdateUserRequest {
   uint64 user_id = 1;
-  common.User new_data = 2;
+  string username = 2;
+  string email = 3;
 }
 
 message UpdateUserResponse {
