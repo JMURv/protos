@@ -11,9 +11,6 @@ message User {
   string username = 2;
   string email = 3;
   bool is_admin = 4;
-  repeated Item items = 5;
-  repeated Favorite favorites = 6;
-  repeated Review reviews = 7;
 }
 
 message Category {
@@ -34,8 +31,6 @@ message Item {
   uint64 category_id = 5;
   Category category = 6;
   uint64 user_id = 7;
-  User user = 8;
-  repeated Review reviews = 9;
   repeated Tag tags = 10;
   string status = 11;
   int32 quantity = 12;
