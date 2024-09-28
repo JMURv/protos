@@ -21,7 +21,8 @@ message SEOMsg {
 
 service SEO {
   rpc GetSEO(GetReq) returns (SEOMsg);
-  rpc UpdateSEO(UpdateReq) returns (Empty);
+  rpc CreateSEO(CreateAndUpdateReq) returns (Empty);
+  rpc UpdateSEO(CreateAndUpdateReq) returns (Empty);
 }
 
 message GetReq {
@@ -29,7 +30,7 @@ message GetReq {
   string pk = 2;
 }
 
-message UpdateReq {
+message CreateAndUpdateReq {
   string name = 1;
   string pk = 2;
   SEOMsg seo = 3;
