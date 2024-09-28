@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package user;
+package protos;
 
-option go_package = "github.com/JMURv/par-pro/api/pb/users";
+option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
 message Empty {}

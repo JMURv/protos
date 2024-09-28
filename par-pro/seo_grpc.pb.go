@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v4.25.1
-// source: api/pb/seo.proto
+// source: seo.proto
 
-package seo
+package protos
 
 import (
 	context "context"
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SEO_GetSEO_FullMethodName    = "/seo.SEO/GetSEO"
-	SEO_UpdateSEO_FullMethodName = "/seo.SEO/UpdateSEO"
+	SEO_GetSEO_FullMethodName    = "/protos.SEO/GetSEO"
+	SEO_UpdateSEO_FullMethodName = "/protos.SEO/UpdateSEO"
 )
 
 // SEOClient is the client API for SEO service.
@@ -142,7 +142,7 @@ func _SEO_UpdateSEO_Handler(srv interface{}, ctx context.Context, dec func(inter
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SEO_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "seo.SEO",
+	ServiceName: "protos.SEO",
 	HandlerType: (*SEOServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -155,5 +155,5 @@ var SEO_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/pb/seo.proto",
+	Metadata: "seo.proto",
 }
