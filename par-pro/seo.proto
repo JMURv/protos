@@ -23,6 +23,7 @@ service SEO {
   rpc GetSEO(GetReq) returns (SEOMsg);
   rpc CreateSEO(CreateAndUpdateReq) returns (Empty);
   rpc UpdateSEO(CreateAndUpdateReq) returns (Empty);
+  rpc DeleteSEO(GetReq) returns (Empty);
 }
 
 message GetReq {
