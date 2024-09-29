@@ -28,18 +28,18 @@ message SlideMsg {
 }
 
 service Banner {
-  rpc GetBanner(GetReq) returns (BannerMsg);
+  rpc GetBanner(GetBannerReq) returns (BannerMsg);
   rpc CreateBanner(BannerMsg) returns (Empty);
-  rpc UpdateBanner(CreateAndUpdateReq) returns (Empty);
-  rpc DeleteBanner(GetReq) returns (Empty);
+  rpc UpdateBanner(CreateAndUpdateBannerReq) returns (Empty);
+  rpc DeleteBanner(GetBannerReq) returns (Empty);
 }
 
-message GetReq {
+message GetBannerReq {
   string name = 1;
   string pk = 2;
 }
 
-message CreateAndUpdateReq {
+message CreateAndUpdateBannerReq {
   string name = 1;
   string pk = 2;
   BannerMsg banner = 3;

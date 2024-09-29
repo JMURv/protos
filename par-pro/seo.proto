@@ -20,18 +20,18 @@ message SEOMsg {
 }
 
 service SEO {
-  rpc GetSEO(GetReq) returns (SEOMsg);
-  rpc CreateSEO(CreateAndUpdateReq) returns (Empty);
-  rpc UpdateSEO(CreateAndUpdateReq) returns (Empty);
-  rpc DeleteSEO(GetReq) returns (Empty);
+  rpc GetSEO(GetSEOReq) returns (SEOMsg);
+  rpc CreateSEO(CreateAndUpdateSEOReq) returns (Empty);
+  rpc UpdateSEO(CreateAndUpdateSEOReq) returns (Empty);
+  rpc DeleteSEO(GetSEOReq) returns (Empty);
 }
 
-message GetReq {
+message GetSEOReq {
   string name = 1;
   string pk = 2;
 }
 
-message CreateAndUpdateReq {
+message CreateAndUpdateSEOReq {
   string name = 1;
   string pk = 2;
   SEOMsg seo = 3;

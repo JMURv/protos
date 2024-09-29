@@ -29,10 +29,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BannerClient interface {
-	GetBanner(ctx context.Context, in *GetReq, opts ...grpc.CallOption) (*BannerMsg, error)
+	GetBanner(ctx context.Context, in *GetBannerReq, opts ...grpc.CallOption) (*BannerMsg, error)
 	CreateBanner(ctx context.Context, in *BannerMsg, opts ...grpc.CallOption) (*Empty, error)
-	UpdateBanner(ctx context.Context, in *CreateAndUpdateReq, opts ...grpc.CallOption) (*Empty, error)
-	DeleteBanner(ctx context.Context, in *GetReq, opts ...grpc.CallOption) (*Empty, error)
+	UpdateBanner(ctx context.Context, in *CreateAndUpdateBannerReq, opts ...grpc.CallOption) (*Empty, error)
+	DeleteBanner(ctx context.Context, in *GetBannerReq, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type bannerClient struct {
@@ -43,7 +43,7 @@ func NewBannerClient(cc grpc.ClientConnInterface) BannerClient {
 	return &bannerClient{cc}
 }
 
-func (c *bannerClient) GetBanner(ctx context.Context, in *GetReq, opts ...grpc.CallOption) (*BannerMsg, error) {
+func (c *bannerClient) GetBanner(ctx context.Context, in *GetBannerReq, opts ...grpc.CallOption) (*BannerMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(BannerMsg)
 	err := c.cc.Invoke(ctx, Banner_GetBanner_FullMethodName, in, out, cOpts...)
@@ -63,7 +63,7 @@ func (c *bannerClient) CreateBanner(ctx context.Context, in *BannerMsg, opts ...
 	return out, nil
 }
 
-func (c *bannerClient) UpdateBanner(ctx context.Context, in *CreateAndUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *bannerClient) UpdateBanner(ctx context.Context, in *CreateAndUpdateBannerReq, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, Banner_UpdateBanner_FullMethodName, in, out, cOpts...)
@@ -73,7 +73,7 @@ func (c *bannerClient) UpdateBanner(ctx context.Context, in *CreateAndUpdateReq,
 	return out, nil
 }
 
-func (c *bannerClient) DeleteBanner(ctx context.Context, in *GetReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *bannerClient) DeleteBanner(ctx context.Context, in *GetBannerReq, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, Banner_DeleteBanner_FullMethodName, in, out, cOpts...)
@@ -87,10 +87,10 @@ func (c *bannerClient) DeleteBanner(ctx context.Context, in *GetReq, opts ...grp
 // All implementations must embed UnimplementedBannerServer
 // for forward compatibility.
 type BannerServer interface {
-	GetBanner(context.Context, *GetReq) (*BannerMsg, error)
+	GetBanner(context.Context, *GetBannerReq) (*BannerMsg, error)
 	CreateBanner(context.Context, *BannerMsg) (*Empty, error)
-	UpdateBanner(context.Context, *CreateAndUpdateReq) (*Empty, error)
-	DeleteBanner(context.Context, *GetReq) (*Empty, error)
+	UpdateBanner(context.Context, *CreateAndUpdateBannerReq) (*Empty, error)
+	DeleteBanner(context.Context, *GetBannerReq) (*Empty, error)
 	mustEmbedUnimplementedBannerServer()
 }
 
@@ -101,16 +101,16 @@ type BannerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedBannerServer struct{}
 
-func (UnimplementedBannerServer) GetBanner(context.Context, *GetReq) (*BannerMsg, error) {
+func (UnimplementedBannerServer) GetBanner(context.Context, *GetBannerReq) (*BannerMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBanner not implemented")
 }
 func (UnimplementedBannerServer) CreateBanner(context.Context, *BannerMsg) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBanner not implemented")
 }
-func (UnimplementedBannerServer) UpdateBanner(context.Context, *CreateAndUpdateReq) (*Empty, error) {
+func (UnimplementedBannerServer) UpdateBanner(context.Context, *CreateAndUpdateBannerReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBanner not implemented")
 }
-func (UnimplementedBannerServer) DeleteBanner(context.Context, *GetReq) (*Empty, error) {
+func (UnimplementedBannerServer) DeleteBanner(context.Context, *GetBannerReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBanner not implemented")
 }
 func (UnimplementedBannerServer) mustEmbedUnimplementedBannerServer() {}
@@ -135,7 +135,7 @@ func RegisterBannerServer(s grpc.ServiceRegistrar, srv BannerServer) {
 }
 
 func _Banner_GetBanner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetReq)
+	in := new(GetBannerReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func _Banner_GetBanner_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Banner_GetBanner_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BannerServer).GetBanner(ctx, req.(*GetReq))
+		return srv.(BannerServer).GetBanner(ctx, req.(*GetBannerReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -171,7 +171,7 @@ func _Banner_CreateBanner_Handler(srv interface{}, ctx context.Context, dec func
 }
 
 func _Banner_UpdateBanner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAndUpdateReq)
+	in := new(CreateAndUpdateBannerReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,13 +183,13 @@ func _Banner_UpdateBanner_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: Banner_UpdateBanner_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BannerServer).UpdateBanner(ctx, req.(*CreateAndUpdateReq))
+		return srv.(BannerServer).UpdateBanner(ctx, req.(*CreateAndUpdateBannerReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Banner_DeleteBanner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetReq)
+	in := new(GetBannerReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func _Banner_DeleteBanner_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: Banner_DeleteBanner_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BannerServer).DeleteBanner(ctx, req.(*GetReq))
+		return srv.(BannerServer).DeleteBanner(ctx, req.(*GetBannerReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
