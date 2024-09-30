@@ -3,7 +3,7 @@ package protos;
 option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
-message Empty {}
+message EmptyEtc {}
 
 message BannerMsg {
   uint64 id = 1;
@@ -29,9 +29,9 @@ message SlideMsg {
 
 service Banner {
   rpc GetBanner(GetBannerReq) returns (BannerMsg);
-  rpc CreateBanner(BannerMsg) returns (Empty);
-  rpc UpdateBanner(CreateAndUpdateBannerReq) returns (Empty);
-  rpc DeleteBanner(GetBannerReq) returns (Empty);
+  rpc CreateBanner(BannerMsg) returns (EmptyEtc);
+  rpc UpdateBanner(CreateAndUpdateBannerReq) returns (EmptyEtc);
+  rpc DeleteBanner(GetBannerReq) returns (EmptyEtc);
 }
 
 message GetBannerReq {

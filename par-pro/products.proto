@@ -5,9 +5,9 @@ package protos;
 option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
-message Empty {}
-message uuidMsg {string uuid = 1;}
-message slugMsg {string slug = 1;}
+message EmptyProducts {}
+message uuidProductsMsg {string uuid = 1;}
+message slugProductsMsg {string slug = 1;}
 
 message ListReq {
   uint64 page = 1;
@@ -110,10 +110,10 @@ service Item {
   rpc ItemAttrSearch(SearchReq) returns (PaginatedItemRes);
   rpc ListItems(ListReq) returns (PaginatedItemRes);
   rpc CreateItem(ItemMsg) returns (ItemMsg);
-  rpc GetItem(uuidMsg) returns (ItemMsg);
+  rpc GetItem(uuidProductsMsg) returns (ItemMsg);
   rpc UpdateItem(ItemWithUid) returns (ItemMsg);
-  rpc DeleteItem(uuidMsg) returns (ItemMsg);
-  rpc ListRelatedItems(uuidMsg) returns (RelatedItemsList);
+  rpc DeleteItem(uuidProductsMsg) returns (ItemMsg);
+  rpc ListRelatedItems(uuidProductsMsg) returns (RelatedItemsList);
   rpc listCategoryItems(listCategoryItemsReq) returns (PaginatedItemRes);
   rpc HitItems(ListReq) returns (PaginatedItemRes);
   rpc RecItems(ListReq) returns (PaginatedItemRes);
@@ -148,10 +148,10 @@ service Category {
   rpc CreateCategory(CategoryMsg) returns (CategoryMsg);
   rpc CategorySearch(SearchReq) returns (PaginatedCategoryRes);
   rpc CategoryFiltersSearch(SearchReq) returns (PaginatedFilterRes);
-  rpc GetCategory(slugMsg) returns (CategoryMsg);
+  rpc GetCategory(slugProductsMsg) returns (CategoryMsg);
   rpc UpdateCategory(CategoryWithSlug) returns (CategoryMsg);
-  rpc DeleteCategory(slugMsg) returns (Empty);
-  rpc ListCategoryFilters(slugMsg) returns (FilterListRes);
+  rpc DeleteCategory(slugProductsMsg) returns (EmptyProducts);
+  rpc ListCategoryFilters(slugProductsMsg) returns (FilterListRes);
 }
 
 message PaginatedCategoryRes {
@@ -175,9 +175,9 @@ message PaginatedFilterRes {
 }
 
 service Favorite {
-  rpc ListFavorites(uuidMsg) returns (FavoriteListMsg);
+  rpc ListFavorites(uuidProductsMsg) returns (FavoriteListMsg);
   rpc AddToFavorites(UserAndItemIds) returns (FavoriteMsg);
-  rpc RemoveFromFavorites(UserAndItemIds) returns (Empty);
+  rpc RemoveFromFavorites(UserAndItemIds) returns (EmptyProducts);
 }
 
 message FavoriteMsg {
@@ -201,9 +201,9 @@ service Promotion {
   rpc ListPromotions(ListReq) returns (PaginatedPromoRes);
   rpc PromotionSearch(SearchReq) returns (PaginatedPromoRes);
   rpc CreatePromotion(PromoMsg) returns (PromoMsg);
-  rpc GetPromotion(slugMsg) returns (PromoMsg);
+  rpc GetPromotion(slugProductsMsg) returns (PromoMsg);
   rpc UpdatePromotion(PromoWithSlug) returns (PromoMsg);
-  rpc DeletePromotion(slugMsg) returns (Empty);
+  rpc DeletePromotion(slugProductsMsg) returns (EmptyProducts);
   rpc ListPromotionItems(ListPromotionItemsReq) returns (PaginatedPromoItemsRes);
 }
 

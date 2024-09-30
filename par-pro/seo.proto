@@ -3,7 +3,7 @@ package protos;
 option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
-message Empty {}
+message EmptySEO {}
 
 message SEOMsg {
   uint64 id = 1;
@@ -21,9 +21,9 @@ message SEOMsg {
 
 service SEO {
   rpc GetSEO(GetSEOReq) returns (SEOMsg);
-  rpc CreateSEO(CreateAndUpdateSEOReq) returns (Empty);
-  rpc UpdateSEO(CreateAndUpdateSEOReq) returns (Empty);
-  rpc DeleteSEO(GetSEOReq) returns (Empty);
+  rpc CreateSEO(CreateAndUpdateSEOReq) returns (EmptySEO);
+  rpc UpdateSEO(CreateAndUpdateSEOReq) returns (EmptySEO);
+  rpc DeleteSEO(GetSEOReq) returns (EmptySEO);
 }
 
 message GetSEOReq {

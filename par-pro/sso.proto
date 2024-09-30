@@ -5,9 +5,9 @@ package protos;
 option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
-message Empty {}
+message EmptyUser {}
 
-message uuidMsg {
+message uuidSSOMsg {
   string uuid = 1;
 }
 
@@ -26,14 +26,14 @@ message User {
 }
 
 service SSO {
-  rpc SendLoginCode (SendLoginCodeReq) returns (Empty);
+  rpc SendLoginCode (SendLoginCodeReq) returns (EmptyUser);
   rpc CheckLoginCode (CheckLoginCodeReq) returns (CheckLoginCodeRes);
   rpc CheckEmail (EmailMsg) returns (CheckEmailRes);
-  rpc Logout (Empty) returns (Empty);
-  rpc SendForgotPasswordEmail (EmailMsg) returns (Empty);
-  rpc CheckForgotPasswordEmail (CheckForgotPasswordEmailReq) returns (Empty);
-  rpc SendSupportEmail (SendSupportEmailReq) returns (Empty);
-  rpc Me (Empty) returns (User);
+  rpc Logout (EmptyUser) returns (EmptyUser);
+  rpc SendForgotPasswordEmail (EmailMsg) returns (EmptyUser);
+  rpc CheckForgotPasswordEmail (CheckForgotPasswordEmailReq) returns (EmptyUser);
+  rpc SendSupportEmail (SendSupportEmailReq) returns (EmptyUser);
+  rpc Me (EmptyUser) returns (User);
   rpc UpdateMe(User) returns (User);
 }
 
@@ -75,9 +75,9 @@ service Users {
   rpc UserSearch (UserSearchReq) returns (PaginatedUsersRes);
   rpc ListUsers (ListUsersReq) returns (PaginatedUsersRes);
   rpc Register (RegisterReq) returns (RegisterRes);
-  rpc GetUser (uuidMsg) returns (User);
+  rpc GetUser (uuidSSOMsg) returns (User);
   rpc UpdateUser (UserWithUid) returns (User);
-  rpc DeleteUser (uuidMsg) returns (Empty);
+  rpc DeleteUser (uuidSSOMsg) returns (EmptyUser);
 }
 
 message UserWithUid {

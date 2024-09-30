@@ -30,9 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SEOClient interface {
 	GetSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*SEOMsg, error)
-	CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*Empty, error)
-	UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*Empty, error)
-	DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*Empty, error)
+	CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
+	UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
+	DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
 }
 
 type sEOClient struct {
@@ -53,9 +53,9 @@ func (c *sEOClient) GetSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.Call
 	return out, nil
 }
 
-func (c *sEOClient) CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *sEOClient) CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptySEO)
 	err := c.cc.Invoke(ctx, SEO_CreateSEO_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -63,9 +63,9 @@ func (c *sEOClient) CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, op
 	return out, nil
 }
 
-func (c *sEOClient) UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *sEOClient) UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptySEO)
 	err := c.cc.Invoke(ctx, SEO_UpdateSEO_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -73,9 +73,9 @@ func (c *sEOClient) UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, op
 	return out, nil
 }
 
-func (c *sEOClient) DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *sEOClient) DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*EmptySEO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptySEO)
 	err := c.cc.Invoke(ctx, SEO_DeleteSEO_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -88,9 +88,9 @@ func (c *sEOClient) DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.C
 // for forward compatibility.
 type SEOServer interface {
 	GetSEO(context.Context, *GetSEOReq) (*SEOMsg, error)
-	CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*Empty, error)
-	UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*Empty, error)
-	DeleteSEO(context.Context, *GetSEOReq) (*Empty, error)
+	CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error)
+	UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error)
+	DeleteSEO(context.Context, *GetSEOReq) (*EmptySEO, error)
 	mustEmbedUnimplementedSEOServer()
 }
 
@@ -104,13 +104,13 @@ type UnimplementedSEOServer struct{}
 func (UnimplementedSEOServer) GetSEO(context.Context, *GetSEOReq) (*SEOMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSEO not implemented")
 }
-func (UnimplementedSEOServer) CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*Empty, error) {
+func (UnimplementedSEOServer) CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSEO not implemented")
 }
-func (UnimplementedSEOServer) UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*Empty, error) {
+func (UnimplementedSEOServer) UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSEO not implemented")
 }
-func (UnimplementedSEOServer) DeleteSEO(context.Context, *GetSEOReq) (*Empty, error) {
+func (UnimplementedSEOServer) DeleteSEO(context.Context, *GetSEOReq) (*EmptySEO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSEO not implemented")
 }
 func (UnimplementedSEOServer) mustEmbedUnimplementedSEOServer() {}

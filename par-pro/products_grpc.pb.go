@@ -40,10 +40,10 @@ type ItemClient interface {
 	ItemAttrSearch(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedItemRes, error)
 	ListItems(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedItemRes, error)
 	CreateItem(ctx context.Context, in *ItemMsg, opts ...grpc.CallOption) (*ItemMsg, error)
-	GetItem(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*ItemMsg, error)
+	GetItem(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*ItemMsg, error)
 	UpdateItem(ctx context.Context, in *ItemWithUid, opts ...grpc.CallOption) (*ItemMsg, error)
-	DeleteItem(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*ItemMsg, error)
-	ListRelatedItems(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*RelatedItemsList, error)
+	DeleteItem(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*ItemMsg, error)
+	ListRelatedItems(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*RelatedItemsList, error)
 	ListCategoryItems(ctx context.Context, in *ListCategoryItemsReq, opts ...grpc.CallOption) (*PaginatedItemRes, error)
 	HitItems(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedItemRes, error)
 	RecItems(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedItemRes, error)
@@ -97,7 +97,7 @@ func (c *itemClient) CreateItem(ctx context.Context, in *ItemMsg, opts ...grpc.C
 	return out, nil
 }
 
-func (c *itemClient) GetItem(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*ItemMsg, error) {
+func (c *itemClient) GetItem(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*ItemMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ItemMsg)
 	err := c.cc.Invoke(ctx, Item_GetItem_FullMethodName, in, out, cOpts...)
@@ -117,7 +117,7 @@ func (c *itemClient) UpdateItem(ctx context.Context, in *ItemWithUid, opts ...gr
 	return out, nil
 }
 
-func (c *itemClient) DeleteItem(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*ItemMsg, error) {
+func (c *itemClient) DeleteItem(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*ItemMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ItemMsg)
 	err := c.cc.Invoke(ctx, Item_DeleteItem_FullMethodName, in, out, cOpts...)
@@ -127,7 +127,7 @@ func (c *itemClient) DeleteItem(ctx context.Context, in *UuidMsg, opts ...grpc.C
 	return out, nil
 }
 
-func (c *itemClient) ListRelatedItems(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*RelatedItemsList, error) {
+func (c *itemClient) ListRelatedItems(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*RelatedItemsList, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RelatedItemsList)
 	err := c.cc.Invoke(ctx, Item_ListRelatedItems_FullMethodName, in, out, cOpts...)
@@ -175,10 +175,10 @@ type ItemServer interface {
 	ItemAttrSearch(context.Context, *SearchReq) (*PaginatedItemRes, error)
 	ListItems(context.Context, *ListReq) (*PaginatedItemRes, error)
 	CreateItem(context.Context, *ItemMsg) (*ItemMsg, error)
-	GetItem(context.Context, *UuidMsg) (*ItemMsg, error)
+	GetItem(context.Context, *UuidProductsMsg) (*ItemMsg, error)
 	UpdateItem(context.Context, *ItemWithUid) (*ItemMsg, error)
-	DeleteItem(context.Context, *UuidMsg) (*ItemMsg, error)
-	ListRelatedItems(context.Context, *UuidMsg) (*RelatedItemsList, error)
+	DeleteItem(context.Context, *UuidProductsMsg) (*ItemMsg, error)
+	ListRelatedItems(context.Context, *UuidProductsMsg) (*RelatedItemsList, error)
 	ListCategoryItems(context.Context, *ListCategoryItemsReq) (*PaginatedItemRes, error)
 	HitItems(context.Context, *ListReq) (*PaginatedItemRes, error)
 	RecItems(context.Context, *ListReq) (*PaginatedItemRes, error)
@@ -204,16 +204,16 @@ func (UnimplementedItemServer) ListItems(context.Context, *ListReq) (*PaginatedI
 func (UnimplementedItemServer) CreateItem(context.Context, *ItemMsg) (*ItemMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateItem not implemented")
 }
-func (UnimplementedItemServer) GetItem(context.Context, *UuidMsg) (*ItemMsg, error) {
+func (UnimplementedItemServer) GetItem(context.Context, *UuidProductsMsg) (*ItemMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetItem not implemented")
 }
 func (UnimplementedItemServer) UpdateItem(context.Context, *ItemWithUid) (*ItemMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateItem not implemented")
 }
-func (UnimplementedItemServer) DeleteItem(context.Context, *UuidMsg) (*ItemMsg, error) {
+func (UnimplementedItemServer) DeleteItem(context.Context, *UuidProductsMsg) (*ItemMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteItem not implemented")
 }
-func (UnimplementedItemServer) ListRelatedItems(context.Context, *UuidMsg) (*RelatedItemsList, error) {
+func (UnimplementedItemServer) ListRelatedItems(context.Context, *UuidProductsMsg) (*RelatedItemsList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRelatedItems not implemented")
 }
 func (UnimplementedItemServer) ListCategoryItems(context.Context, *ListCategoryItemsReq) (*PaginatedItemRes, error) {
@@ -319,7 +319,7 @@ func _Item_CreateItem_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _Item_GetItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -331,7 +331,7 @@ func _Item_GetItem_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: Item_GetItem_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ItemServer).GetItem(ctx, req.(*UuidMsg))
+		return srv.(ItemServer).GetItem(ctx, req.(*UuidProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -355,7 +355,7 @@ func _Item_UpdateItem_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _Item_DeleteItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -367,13 +367,13 @@ func _Item_DeleteItem_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Item_DeleteItem_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ItemServer).DeleteItem(ctx, req.(*UuidMsg))
+		return srv.(ItemServer).DeleteItem(ctx, req.(*UuidProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Item_ListRelatedItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -385,7 +385,7 @@ func _Item_ListRelatedItems_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: Item_ListRelatedItems_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ItemServer).ListRelatedItems(ctx, req.(*UuidMsg))
+		return srv.(ItemServer).ListRelatedItems(ctx, req.(*UuidProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -519,10 +519,10 @@ type CategoryClient interface {
 	CreateCategory(ctx context.Context, in *CategoryMsg, opts ...grpc.CallOption) (*CategoryMsg, error)
 	CategorySearch(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedCategoryRes, error)
 	CategoryFiltersSearch(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedFilterRes, error)
-	GetCategory(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*CategoryMsg, error)
+	GetCategory(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*CategoryMsg, error)
 	UpdateCategory(ctx context.Context, in *CategoryWithSlug, opts ...grpc.CallOption) (*CategoryMsg, error)
-	DeleteCategory(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*Empty, error)
-	ListCategoryFilters(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*FilterListRes, error)
+	DeleteCategory(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*EmptyProducts, error)
+	ListCategoryFilters(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*FilterListRes, error)
 }
 
 type categoryClient struct {
@@ -573,7 +573,7 @@ func (c *categoryClient) CategoryFiltersSearch(ctx context.Context, in *SearchRe
 	return out, nil
 }
 
-func (c *categoryClient) GetCategory(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*CategoryMsg, error) {
+func (c *categoryClient) GetCategory(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*CategoryMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CategoryMsg)
 	err := c.cc.Invoke(ctx, Category_GetCategory_FullMethodName, in, out, cOpts...)
@@ -593,9 +593,9 @@ func (c *categoryClient) UpdateCategory(ctx context.Context, in *CategoryWithSlu
 	return out, nil
 }
 
-func (c *categoryClient) DeleteCategory(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*Empty, error) {
+func (c *categoryClient) DeleteCategory(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*EmptyProducts, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptyProducts)
 	err := c.cc.Invoke(ctx, Category_DeleteCategory_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -603,7 +603,7 @@ func (c *categoryClient) DeleteCategory(ctx context.Context, in *SlugMsg, opts .
 	return out, nil
 }
 
-func (c *categoryClient) ListCategoryFilters(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*FilterListRes, error) {
+func (c *categoryClient) ListCategoryFilters(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*FilterListRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FilterListRes)
 	err := c.cc.Invoke(ctx, Category_ListCategoryFilters_FullMethodName, in, out, cOpts...)
@@ -621,10 +621,10 @@ type CategoryServer interface {
 	CreateCategory(context.Context, *CategoryMsg) (*CategoryMsg, error)
 	CategorySearch(context.Context, *SearchReq) (*PaginatedCategoryRes, error)
 	CategoryFiltersSearch(context.Context, *SearchReq) (*PaginatedFilterRes, error)
-	GetCategory(context.Context, *SlugMsg) (*CategoryMsg, error)
+	GetCategory(context.Context, *SlugProductsMsg) (*CategoryMsg, error)
 	UpdateCategory(context.Context, *CategoryWithSlug) (*CategoryMsg, error)
-	DeleteCategory(context.Context, *SlugMsg) (*Empty, error)
-	ListCategoryFilters(context.Context, *SlugMsg) (*FilterListRes, error)
+	DeleteCategory(context.Context, *SlugProductsMsg) (*EmptyProducts, error)
+	ListCategoryFilters(context.Context, *SlugProductsMsg) (*FilterListRes, error)
 	mustEmbedUnimplementedCategoryServer()
 }
 
@@ -647,16 +647,16 @@ func (UnimplementedCategoryServer) CategorySearch(context.Context, *SearchReq) (
 func (UnimplementedCategoryServer) CategoryFiltersSearch(context.Context, *SearchReq) (*PaginatedFilterRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CategoryFiltersSearch not implemented")
 }
-func (UnimplementedCategoryServer) GetCategory(context.Context, *SlugMsg) (*CategoryMsg, error) {
+func (UnimplementedCategoryServer) GetCategory(context.Context, *SlugProductsMsg) (*CategoryMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCategory not implemented")
 }
 func (UnimplementedCategoryServer) UpdateCategory(context.Context, *CategoryWithSlug) (*CategoryMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCategory not implemented")
 }
-func (UnimplementedCategoryServer) DeleteCategory(context.Context, *SlugMsg) (*Empty, error) {
+func (UnimplementedCategoryServer) DeleteCategory(context.Context, *SlugProductsMsg) (*EmptyProducts, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCategory not implemented")
 }
-func (UnimplementedCategoryServer) ListCategoryFilters(context.Context, *SlugMsg) (*FilterListRes, error) {
+func (UnimplementedCategoryServer) ListCategoryFilters(context.Context, *SlugProductsMsg) (*FilterListRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCategoryFilters not implemented")
 }
 func (UnimplementedCategoryServer) mustEmbedUnimplementedCategoryServer() {}
@@ -753,7 +753,7 @@ func _Category_CategoryFiltersSearch_Handler(srv interface{}, ctx context.Contex
 }
 
 func _Category_GetCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlugMsg)
+	in := new(SlugProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -765,7 +765,7 @@ func _Category_GetCategory_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: Category_GetCategory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CategoryServer).GetCategory(ctx, req.(*SlugMsg))
+		return srv.(CategoryServer).GetCategory(ctx, req.(*SlugProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -789,7 +789,7 @@ func _Category_UpdateCategory_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _Category_DeleteCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlugMsg)
+	in := new(SlugProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -801,13 +801,13 @@ func _Category_DeleteCategory_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: Category_DeleteCategory_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CategoryServer).DeleteCategory(ctx, req.(*SlugMsg))
+		return srv.(CategoryServer).DeleteCategory(ctx, req.(*SlugProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Category_ListCategoryFilters_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlugMsg)
+	in := new(SlugProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -819,7 +819,7 @@ func _Category_ListCategoryFilters_Handler(srv interface{}, ctx context.Context,
 		FullMethod: Category_ListCategoryFilters_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CategoryServer).ListCategoryFilters(ctx, req.(*SlugMsg))
+		return srv.(CategoryServer).ListCategoryFilters(ctx, req.(*SlugProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -878,9 +878,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FavoriteClient interface {
-	ListFavorites(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*FavoriteListMsg, error)
+	ListFavorites(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*FavoriteListMsg, error)
 	AddToFavorites(ctx context.Context, in *UserAndItemIds, opts ...grpc.CallOption) (*FavoriteMsg, error)
-	RemoveFromFavorites(ctx context.Context, in *UserAndItemIds, opts ...grpc.CallOption) (*Empty, error)
+	RemoveFromFavorites(ctx context.Context, in *UserAndItemIds, opts ...grpc.CallOption) (*EmptyProducts, error)
 }
 
 type favoriteClient struct {
@@ -891,7 +891,7 @@ func NewFavoriteClient(cc grpc.ClientConnInterface) FavoriteClient {
 	return &favoriteClient{cc}
 }
 
-func (c *favoriteClient) ListFavorites(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*FavoriteListMsg, error) {
+func (c *favoriteClient) ListFavorites(ctx context.Context, in *UuidProductsMsg, opts ...grpc.CallOption) (*FavoriteListMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(FavoriteListMsg)
 	err := c.cc.Invoke(ctx, Favorite_ListFavorites_FullMethodName, in, out, cOpts...)
@@ -911,9 +911,9 @@ func (c *favoriteClient) AddToFavorites(ctx context.Context, in *UserAndItemIds,
 	return out, nil
 }
 
-func (c *favoriteClient) RemoveFromFavorites(ctx context.Context, in *UserAndItemIds, opts ...grpc.CallOption) (*Empty, error) {
+func (c *favoriteClient) RemoveFromFavorites(ctx context.Context, in *UserAndItemIds, opts ...grpc.CallOption) (*EmptyProducts, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptyProducts)
 	err := c.cc.Invoke(ctx, Favorite_RemoveFromFavorites_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -925,9 +925,9 @@ func (c *favoriteClient) RemoveFromFavorites(ctx context.Context, in *UserAndIte
 // All implementations must embed UnimplementedFavoriteServer
 // for forward compatibility.
 type FavoriteServer interface {
-	ListFavorites(context.Context, *UuidMsg) (*FavoriteListMsg, error)
+	ListFavorites(context.Context, *UuidProductsMsg) (*FavoriteListMsg, error)
 	AddToFavorites(context.Context, *UserAndItemIds) (*FavoriteMsg, error)
-	RemoveFromFavorites(context.Context, *UserAndItemIds) (*Empty, error)
+	RemoveFromFavorites(context.Context, *UserAndItemIds) (*EmptyProducts, error)
 	mustEmbedUnimplementedFavoriteServer()
 }
 
@@ -938,13 +938,13 @@ type FavoriteServer interface {
 // pointer dereference when methods are called.
 type UnimplementedFavoriteServer struct{}
 
-func (UnimplementedFavoriteServer) ListFavorites(context.Context, *UuidMsg) (*FavoriteListMsg, error) {
+func (UnimplementedFavoriteServer) ListFavorites(context.Context, *UuidProductsMsg) (*FavoriteListMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFavorites not implemented")
 }
 func (UnimplementedFavoriteServer) AddToFavorites(context.Context, *UserAndItemIds) (*FavoriteMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddToFavorites not implemented")
 }
-func (UnimplementedFavoriteServer) RemoveFromFavorites(context.Context, *UserAndItemIds) (*Empty, error) {
+func (UnimplementedFavoriteServer) RemoveFromFavorites(context.Context, *UserAndItemIds) (*EmptyProducts, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveFromFavorites not implemented")
 }
 func (UnimplementedFavoriteServer) mustEmbedUnimplementedFavoriteServer() {}
@@ -969,7 +969,7 @@ func RegisterFavoriteServer(s grpc.ServiceRegistrar, srv FavoriteServer) {
 }
 
 func _Favorite_ListFavorites_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -981,7 +981,7 @@ func _Favorite_ListFavorites_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Favorite_ListFavorites_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoriteServer).ListFavorites(ctx, req.(*UuidMsg))
+		return srv.(FavoriteServer).ListFavorites(ctx, req.(*UuidProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1063,9 +1063,9 @@ type PromotionClient interface {
 	ListPromotions(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedPromoRes, error)
 	PromotionSearch(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedPromoRes, error)
 	CreatePromotion(ctx context.Context, in *PromoMsg, opts ...grpc.CallOption) (*PromoMsg, error)
-	GetPromotion(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*PromoMsg, error)
+	GetPromotion(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*PromoMsg, error)
 	UpdatePromotion(ctx context.Context, in *PromoWithSlug, opts ...grpc.CallOption) (*PromoMsg, error)
-	DeletePromotion(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*Empty, error)
+	DeletePromotion(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*EmptyProducts, error)
 	ListPromotionItems(ctx context.Context, in *ListPromotionItemsReq, opts ...grpc.CallOption) (*PaginatedPromoItemsRes, error)
 }
 
@@ -1107,7 +1107,7 @@ func (c *promotionClient) CreatePromotion(ctx context.Context, in *PromoMsg, opt
 	return out, nil
 }
 
-func (c *promotionClient) GetPromotion(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*PromoMsg, error) {
+func (c *promotionClient) GetPromotion(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*PromoMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PromoMsg)
 	err := c.cc.Invoke(ctx, Promotion_GetPromotion_FullMethodName, in, out, cOpts...)
@@ -1127,9 +1127,9 @@ func (c *promotionClient) UpdatePromotion(ctx context.Context, in *PromoWithSlug
 	return out, nil
 }
 
-func (c *promotionClient) DeletePromotion(ctx context.Context, in *SlugMsg, opts ...grpc.CallOption) (*Empty, error) {
+func (c *promotionClient) DeletePromotion(ctx context.Context, in *SlugProductsMsg, opts ...grpc.CallOption) (*EmptyProducts, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Empty)
+	out := new(EmptyProducts)
 	err := c.cc.Invoke(ctx, Promotion_DeletePromotion_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -1154,9 +1154,9 @@ type PromotionServer interface {
 	ListPromotions(context.Context, *ListReq) (*PaginatedPromoRes, error)
 	PromotionSearch(context.Context, *SearchReq) (*PaginatedPromoRes, error)
 	CreatePromotion(context.Context, *PromoMsg) (*PromoMsg, error)
-	GetPromotion(context.Context, *SlugMsg) (*PromoMsg, error)
+	GetPromotion(context.Context, *SlugProductsMsg) (*PromoMsg, error)
 	UpdatePromotion(context.Context, *PromoWithSlug) (*PromoMsg, error)
-	DeletePromotion(context.Context, *SlugMsg) (*Empty, error)
+	DeletePromotion(context.Context, *SlugProductsMsg) (*EmptyProducts, error)
 	ListPromotionItems(context.Context, *ListPromotionItemsReq) (*PaginatedPromoItemsRes, error)
 	mustEmbedUnimplementedPromotionServer()
 }
@@ -1177,13 +1177,13 @@ func (UnimplementedPromotionServer) PromotionSearch(context.Context, *SearchReq)
 func (UnimplementedPromotionServer) CreatePromotion(context.Context, *PromoMsg) (*PromoMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePromotion not implemented")
 }
-func (UnimplementedPromotionServer) GetPromotion(context.Context, *SlugMsg) (*PromoMsg, error) {
+func (UnimplementedPromotionServer) GetPromotion(context.Context, *SlugProductsMsg) (*PromoMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPromotion not implemented")
 }
 func (UnimplementedPromotionServer) UpdatePromotion(context.Context, *PromoWithSlug) (*PromoMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePromotion not implemented")
 }
-func (UnimplementedPromotionServer) DeletePromotion(context.Context, *SlugMsg) (*Empty, error) {
+func (UnimplementedPromotionServer) DeletePromotion(context.Context, *SlugProductsMsg) (*EmptyProducts, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePromotion not implemented")
 }
 func (UnimplementedPromotionServer) ListPromotionItems(context.Context, *ListPromotionItemsReq) (*PaginatedPromoItemsRes, error) {
@@ -1265,7 +1265,7 @@ func _Promotion_CreatePromotion_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Promotion_GetPromotion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlugMsg)
+	in := new(SlugProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1277,7 +1277,7 @@ func _Promotion_GetPromotion_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Promotion_GetPromotion_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PromotionServer).GetPromotion(ctx, req.(*SlugMsg))
+		return srv.(PromotionServer).GetPromotion(ctx, req.(*SlugProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1301,7 +1301,7 @@ func _Promotion_UpdatePromotion_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Promotion_DeletePromotion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlugMsg)
+	in := new(SlugProductsMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1313,7 +1313,7 @@ func _Promotion_DeletePromotion_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: Promotion_DeletePromotion_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PromotionServer).DeletePromotion(ctx, req.(*SlugMsg))
+		return srv.(PromotionServer).DeletePromotion(ctx, req.(*SlugProductsMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
