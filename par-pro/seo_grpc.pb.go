@@ -30,8 +30,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SEOClient interface {
 	GetSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*SEOMsg, error)
-	CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
-	UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
+	CreateSEO(ctx context.Context, in *SEOMsg, opts ...grpc.CallOption) (*EmptySEO, error)
+	UpdateSEO(ctx context.Context, in *SEOMsg, opts ...grpc.CallOption) (*EmptySEO, error)
 	DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.CallOption) (*EmptySEO, error)
 }
 
@@ -53,7 +53,7 @@ func (c *sEOClient) GetSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.Call
 	return out, nil
 }
 
-func (c *sEOClient) CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error) {
+func (c *sEOClient) CreateSEO(ctx context.Context, in *SEOMsg, opts ...grpc.CallOption) (*EmptySEO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EmptySEO)
 	err := c.cc.Invoke(ctx, SEO_CreateSEO_FullMethodName, in, out, cOpts...)
@@ -63,7 +63,7 @@ func (c *sEOClient) CreateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, op
 	return out, nil
 }
 
-func (c *sEOClient) UpdateSEO(ctx context.Context, in *CreateAndUpdateSEOReq, opts ...grpc.CallOption) (*EmptySEO, error) {
+func (c *sEOClient) UpdateSEO(ctx context.Context, in *SEOMsg, opts ...grpc.CallOption) (*EmptySEO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EmptySEO)
 	err := c.cc.Invoke(ctx, SEO_UpdateSEO_FullMethodName, in, out, cOpts...)
@@ -88,8 +88,8 @@ func (c *sEOClient) DeleteSEO(ctx context.Context, in *GetSEOReq, opts ...grpc.C
 // for forward compatibility.
 type SEOServer interface {
 	GetSEO(context.Context, *GetSEOReq) (*SEOMsg, error)
-	CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error)
-	UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error)
+	CreateSEO(context.Context, *SEOMsg) (*EmptySEO, error)
+	UpdateSEO(context.Context, *SEOMsg) (*EmptySEO, error)
 	DeleteSEO(context.Context, *GetSEOReq) (*EmptySEO, error)
 	mustEmbedUnimplementedSEOServer()
 }
@@ -104,10 +104,10 @@ type UnimplementedSEOServer struct{}
 func (UnimplementedSEOServer) GetSEO(context.Context, *GetSEOReq) (*SEOMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSEO not implemented")
 }
-func (UnimplementedSEOServer) CreateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error) {
+func (UnimplementedSEOServer) CreateSEO(context.Context, *SEOMsg) (*EmptySEO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateSEO not implemented")
 }
-func (UnimplementedSEOServer) UpdateSEO(context.Context, *CreateAndUpdateSEOReq) (*EmptySEO, error) {
+func (UnimplementedSEOServer) UpdateSEO(context.Context, *SEOMsg) (*EmptySEO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateSEO not implemented")
 }
 func (UnimplementedSEOServer) DeleteSEO(context.Context, *GetSEOReq) (*EmptySEO, error) {
@@ -153,7 +153,7 @@ func _SEO_GetSEO_Handler(srv interface{}, ctx context.Context, dec func(interfac
 }
 
 func _SEO_CreateSEO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAndUpdateSEOReq)
+	in := new(SEOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -165,13 +165,13 @@ func _SEO_CreateSEO_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: SEO_CreateSEO_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SEOServer).CreateSEO(ctx, req.(*CreateAndUpdateSEOReq))
+		return srv.(SEOServer).CreateSEO(ctx, req.(*SEOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _SEO_UpdateSEO_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAndUpdateSEOReq)
+	in := new(SEOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func _SEO_UpdateSEO_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: SEO_UpdateSEO_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SEOServer).UpdateSEO(ctx, req.(*CreateAndUpdateSEOReq))
+		return srv.(SEOServer).UpdateSEO(ctx, req.(*SEOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }

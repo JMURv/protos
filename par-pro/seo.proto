@@ -21,18 +21,12 @@ message SEOMsg {
 
 service SEO {
   rpc GetSEO(GetSEOReq) returns (SEOMsg);
-  rpc CreateSEO(CreateAndUpdateSEOReq) returns (EmptySEO);
-  rpc UpdateSEO(CreateAndUpdateSEOReq) returns (EmptySEO);
+  rpc CreateSEO(SEOMsg) returns (EmptySEO);
+  rpc UpdateSEO(SEOMsg) returns (EmptySEO);
   rpc DeleteSEO(GetSEOReq) returns (EmptySEO);
 }
 
 message GetSEOReq {
   string name = 1;
   string pk = 2;
-}
-
-message CreateAndUpdateSEOReq {
-  string name = 1;
-  string pk = 2;
-  SEOMsg seo = 3;
 }
