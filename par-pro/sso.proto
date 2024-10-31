@@ -11,15 +11,26 @@ message stringSSOMsg {
   string string = 1;
 }
 
-message uuidMsg {
+message uuidSSOMsg {
   string uuid = 1;
 }
-message uint64Msg {
+message uint64SSOMsg {
   uint64 uint64 = 1;
 }
 
 message boolSSOMsg {
   bool bool = 1;
+}
+
+message ListSSOReq {
+  uint64 page = 1;
+  uint64 size = 2;
+}
+
+message SearchSSOReq {
+  string query = 1;
+  uint64 page = 2;
+  uint64 size = 3;
 }
 
 message User {
@@ -36,11 +47,11 @@ message User {
 }
 
 service PermissionSvc {
-  rpc ListPermissions (ListReq) returns (PermissionList);
-  rpc GetPermission (uint64Msg) returns (Permission);
-  rpc CreatePermission (Permission) returns (uint64Msg);
+  rpc ListPermissions (ListSSOReq) returns (PermissionList);
+  rpc GetPermission (uint64SSOMsg) returns (Permission);
+  rpc CreatePermission (Permission) returns (uint64SSOMsg);
   rpc UpdatePermission (Permission) returns (EmptySSO);
-  rpc DeletePermission (uint64Msg) returns (EmptySSO);
+  rpc DeletePermission (uint64SSOMsg) returns (EmptySSO);
 }
 
 message Permission {
@@ -109,12 +120,12 @@ message SendSupportEmailReq {
 }
 
 service Users {
-  rpc SearchUser (SearchReq) returns (PaginatedUsersRes);
-  rpc ListUsers (ListReq) returns (PaginatedUsersRes);
-  rpc GetUser (uuidMsg) returns (User);
+  rpc SearchUser (SearchSSOReq) returns (PaginatedUsersRes);
+  rpc ListUsers (ListSSOReq) returns (PaginatedUsersRes);
+  rpc GetUser (uuidSSOMsg) returns (User);
   rpc CreateUser (CreateUserReq) returns (CreateUserRes);
-  rpc UpdateUser (UserWithUid) returns (uuidMsg);
-  rpc DeleteUser (uuidMsg) returns (EmptySSO);
+  rpc UpdateUser (UserWithUid) returns (uuidSSOMsg);
+  rpc DeleteUser (uuidSSOMsg) returns (EmptySSO);
 }
 
 message UserWithUid {
@@ -140,16 +151,7 @@ message CreateUserRes {
   string refresh = 3;
 }
 
-message ListReq {
-  uint64 page = 1;
-  uint64 size = 2;
-}
 
-message SearchReq {
-  string query = 1;
-  uint64 page = 2;
-  uint64 size = 3;
-}
 
 message PaginatedUsersRes {
   repeated User data = 1;

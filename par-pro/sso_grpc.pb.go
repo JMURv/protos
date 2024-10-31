@@ -30,11 +30,11 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PermissionSvcClient interface {
-	ListPermissions(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PermissionList, error)
-	GetPermission(ctx context.Context, in *Uint64Msg, opts ...grpc.CallOption) (*Permission, error)
-	CreatePermission(ctx context.Context, in *Permission, opts ...grpc.CallOption) (*Uint64Msg, error)
+	ListPermissions(ctx context.Context, in *ListSSOReq, opts ...grpc.CallOption) (*PermissionList, error)
+	GetPermission(ctx context.Context, in *Uint64SSOMsg, opts ...grpc.CallOption) (*Permission, error)
+	CreatePermission(ctx context.Context, in *Permission, opts ...grpc.CallOption) (*Uint64SSOMsg, error)
 	UpdatePermission(ctx context.Context, in *Permission, opts ...grpc.CallOption) (*EmptySSO, error)
-	DeletePermission(ctx context.Context, in *Uint64Msg, opts ...grpc.CallOption) (*EmptySSO, error)
+	DeletePermission(ctx context.Context, in *Uint64SSOMsg, opts ...grpc.CallOption) (*EmptySSO, error)
 }
 
 type permissionSvcClient struct {
@@ -45,7 +45,7 @@ func NewPermissionSvcClient(cc grpc.ClientConnInterface) PermissionSvcClient {
 	return &permissionSvcClient{cc}
 }
 
-func (c *permissionSvcClient) ListPermissions(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PermissionList, error) {
+func (c *permissionSvcClient) ListPermissions(ctx context.Context, in *ListSSOReq, opts ...grpc.CallOption) (*PermissionList, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PermissionList)
 	err := c.cc.Invoke(ctx, PermissionSvc_ListPermissions_FullMethodName, in, out, cOpts...)
@@ -55,7 +55,7 @@ func (c *permissionSvcClient) ListPermissions(ctx context.Context, in *ListReq, 
 	return out, nil
 }
 
-func (c *permissionSvcClient) GetPermission(ctx context.Context, in *Uint64Msg, opts ...grpc.CallOption) (*Permission, error) {
+func (c *permissionSvcClient) GetPermission(ctx context.Context, in *Uint64SSOMsg, opts ...grpc.CallOption) (*Permission, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Permission)
 	err := c.cc.Invoke(ctx, PermissionSvc_GetPermission_FullMethodName, in, out, cOpts...)
@@ -65,9 +65,9 @@ func (c *permissionSvcClient) GetPermission(ctx context.Context, in *Uint64Msg, 
 	return out, nil
 }
 
-func (c *permissionSvcClient) CreatePermission(ctx context.Context, in *Permission, opts ...grpc.CallOption) (*Uint64Msg, error) {
+func (c *permissionSvcClient) CreatePermission(ctx context.Context, in *Permission, opts ...grpc.CallOption) (*Uint64SSOMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Uint64Msg)
+	out := new(Uint64SSOMsg)
 	err := c.cc.Invoke(ctx, PermissionSvc_CreatePermission_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ func (c *permissionSvcClient) UpdatePermission(ctx context.Context, in *Permissi
 	return out, nil
 }
 
-func (c *permissionSvcClient) DeletePermission(ctx context.Context, in *Uint64Msg, opts ...grpc.CallOption) (*EmptySSO, error) {
+func (c *permissionSvcClient) DeletePermission(ctx context.Context, in *Uint64SSOMsg, opts ...grpc.CallOption) (*EmptySSO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EmptySSO)
 	err := c.cc.Invoke(ctx, PermissionSvc_DeletePermission_FullMethodName, in, out, cOpts...)
@@ -99,11 +99,11 @@ func (c *permissionSvcClient) DeletePermission(ctx context.Context, in *Uint64Ms
 // All implementations must embed UnimplementedPermissionSvcServer
 // for forward compatibility.
 type PermissionSvcServer interface {
-	ListPermissions(context.Context, *ListReq) (*PermissionList, error)
-	GetPermission(context.Context, *Uint64Msg) (*Permission, error)
-	CreatePermission(context.Context, *Permission) (*Uint64Msg, error)
+	ListPermissions(context.Context, *ListSSOReq) (*PermissionList, error)
+	GetPermission(context.Context, *Uint64SSOMsg) (*Permission, error)
+	CreatePermission(context.Context, *Permission) (*Uint64SSOMsg, error)
 	UpdatePermission(context.Context, *Permission) (*EmptySSO, error)
-	DeletePermission(context.Context, *Uint64Msg) (*EmptySSO, error)
+	DeletePermission(context.Context, *Uint64SSOMsg) (*EmptySSO, error)
 	mustEmbedUnimplementedPermissionSvcServer()
 }
 
@@ -114,19 +114,19 @@ type PermissionSvcServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPermissionSvcServer struct{}
 
-func (UnimplementedPermissionSvcServer) ListPermissions(context.Context, *ListReq) (*PermissionList, error) {
+func (UnimplementedPermissionSvcServer) ListPermissions(context.Context, *ListSSOReq) (*PermissionList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPermissions not implemented")
 }
-func (UnimplementedPermissionSvcServer) GetPermission(context.Context, *Uint64Msg) (*Permission, error) {
+func (UnimplementedPermissionSvcServer) GetPermission(context.Context, *Uint64SSOMsg) (*Permission, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPermission not implemented")
 }
-func (UnimplementedPermissionSvcServer) CreatePermission(context.Context, *Permission) (*Uint64Msg, error) {
+func (UnimplementedPermissionSvcServer) CreatePermission(context.Context, *Permission) (*Uint64SSOMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePermission not implemented")
 }
 func (UnimplementedPermissionSvcServer) UpdatePermission(context.Context, *Permission) (*EmptySSO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePermission not implemented")
 }
-func (UnimplementedPermissionSvcServer) DeletePermission(context.Context, *Uint64Msg) (*EmptySSO, error) {
+func (UnimplementedPermissionSvcServer) DeletePermission(context.Context, *Uint64SSOMsg) (*EmptySSO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePermission not implemented")
 }
 func (UnimplementedPermissionSvcServer) mustEmbedUnimplementedPermissionSvcServer() {}
@@ -151,7 +151,7 @@ func RegisterPermissionSvcServer(s grpc.ServiceRegistrar, srv PermissionSvcServe
 }
 
 func _PermissionSvc_ListPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListReq)
+	in := new(ListSSOReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -163,13 +163,13 @@ func _PermissionSvc_ListPermissions_Handler(srv interface{}, ctx context.Context
 		FullMethod: PermissionSvc_ListPermissions_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionSvcServer).ListPermissions(ctx, req.(*ListReq))
+		return srv.(PermissionSvcServer).ListPermissions(ctx, req.(*ListSSOReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _PermissionSvc_GetPermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Uint64Msg)
+	in := new(Uint64SSOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func _PermissionSvc_GetPermission_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: PermissionSvc_GetPermission_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionSvcServer).GetPermission(ctx, req.(*Uint64Msg))
+		return srv.(PermissionSvcServer).GetPermission(ctx, req.(*Uint64SSOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -223,7 +223,7 @@ func _PermissionSvc_UpdatePermission_Handler(srv interface{}, ctx context.Contex
 }
 
 func _PermissionSvc_DeletePermission_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Uint64Msg)
+	in := new(Uint64SSOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -235,7 +235,7 @@ func _PermissionSvc_DeletePermission_Handler(srv interface{}, ctx context.Contex
 		FullMethod: PermissionSvc_DeletePermission_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PermissionSvcServer).DeletePermission(ctx, req.(*Uint64Msg))
+		return srv.(PermissionSvcServer).DeletePermission(ctx, req.(*Uint64SSOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -767,12 +767,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UsersClient interface {
-	SearchUser(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error)
-	ListUsers(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error)
-	GetUser(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*User, error)
+	SearchUser(ctx context.Context, in *SearchSSOReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error)
+	ListUsers(ctx context.Context, in *ListSSOReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error)
+	GetUser(ctx context.Context, in *UuidSSOMsg, opts ...grpc.CallOption) (*User, error)
 	CreateUser(ctx context.Context, in *CreateUserReq, opts ...grpc.CallOption) (*CreateUserRes, error)
-	UpdateUser(ctx context.Context, in *UserWithUid, opts ...grpc.CallOption) (*UuidMsg, error)
-	DeleteUser(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*EmptySSO, error)
+	UpdateUser(ctx context.Context, in *UserWithUid, opts ...grpc.CallOption) (*UuidSSOMsg, error)
+	DeleteUser(ctx context.Context, in *UuidSSOMsg, opts ...grpc.CallOption) (*EmptySSO, error)
 }
 
 type usersClient struct {
@@ -783,7 +783,7 @@ func NewUsersClient(cc grpc.ClientConnInterface) UsersClient {
 	return &usersClient{cc}
 }
 
-func (c *usersClient) SearchUser(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error) {
+func (c *usersClient) SearchUser(ctx context.Context, in *SearchSSOReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PaginatedUsersRes)
 	err := c.cc.Invoke(ctx, Users_SearchUser_FullMethodName, in, out, cOpts...)
@@ -793,7 +793,7 @@ func (c *usersClient) SearchUser(ctx context.Context, in *SearchReq, opts ...grp
 	return out, nil
 }
 
-func (c *usersClient) ListUsers(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error) {
+func (c *usersClient) ListUsers(ctx context.Context, in *ListSSOReq, opts ...grpc.CallOption) (*PaginatedUsersRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PaginatedUsersRes)
 	err := c.cc.Invoke(ctx, Users_ListUsers_FullMethodName, in, out, cOpts...)
@@ -803,7 +803,7 @@ func (c *usersClient) ListUsers(ctx context.Context, in *ListReq, opts ...grpc.C
 	return out, nil
 }
 
-func (c *usersClient) GetUser(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*User, error) {
+func (c *usersClient) GetUser(ctx context.Context, in *UuidSSOMsg, opts ...grpc.CallOption) (*User, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(User)
 	err := c.cc.Invoke(ctx, Users_GetUser_FullMethodName, in, out, cOpts...)
@@ -823,9 +823,9 @@ func (c *usersClient) CreateUser(ctx context.Context, in *CreateUserReq, opts ..
 	return out, nil
 }
 
-func (c *usersClient) UpdateUser(ctx context.Context, in *UserWithUid, opts ...grpc.CallOption) (*UuidMsg, error) {
+func (c *usersClient) UpdateUser(ctx context.Context, in *UserWithUid, opts ...grpc.CallOption) (*UuidSSOMsg, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UuidMsg)
+	out := new(UuidSSOMsg)
 	err := c.cc.Invoke(ctx, Users_UpdateUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -833,7 +833,7 @@ func (c *usersClient) UpdateUser(ctx context.Context, in *UserWithUid, opts ...g
 	return out, nil
 }
 
-func (c *usersClient) DeleteUser(ctx context.Context, in *UuidMsg, opts ...grpc.CallOption) (*EmptySSO, error) {
+func (c *usersClient) DeleteUser(ctx context.Context, in *UuidSSOMsg, opts ...grpc.CallOption) (*EmptySSO, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EmptySSO)
 	err := c.cc.Invoke(ctx, Users_DeleteUser_FullMethodName, in, out, cOpts...)
@@ -847,12 +847,12 @@ func (c *usersClient) DeleteUser(ctx context.Context, in *UuidMsg, opts ...grpc.
 // All implementations must embed UnimplementedUsersServer
 // for forward compatibility.
 type UsersServer interface {
-	SearchUser(context.Context, *SearchReq) (*PaginatedUsersRes, error)
-	ListUsers(context.Context, *ListReq) (*PaginatedUsersRes, error)
-	GetUser(context.Context, *UuidMsg) (*User, error)
+	SearchUser(context.Context, *SearchSSOReq) (*PaginatedUsersRes, error)
+	ListUsers(context.Context, *ListSSOReq) (*PaginatedUsersRes, error)
+	GetUser(context.Context, *UuidSSOMsg) (*User, error)
 	CreateUser(context.Context, *CreateUserReq) (*CreateUserRes, error)
-	UpdateUser(context.Context, *UserWithUid) (*UuidMsg, error)
-	DeleteUser(context.Context, *UuidMsg) (*EmptySSO, error)
+	UpdateUser(context.Context, *UserWithUid) (*UuidSSOMsg, error)
+	DeleteUser(context.Context, *UuidSSOMsg) (*EmptySSO, error)
 	mustEmbedUnimplementedUsersServer()
 }
 
@@ -863,22 +863,22 @@ type UsersServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUsersServer struct{}
 
-func (UnimplementedUsersServer) SearchUser(context.Context, *SearchReq) (*PaginatedUsersRes, error) {
+func (UnimplementedUsersServer) SearchUser(context.Context, *SearchSSOReq) (*PaginatedUsersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchUser not implemented")
 }
-func (UnimplementedUsersServer) ListUsers(context.Context, *ListReq) (*PaginatedUsersRes, error) {
+func (UnimplementedUsersServer) ListUsers(context.Context, *ListSSOReq) (*PaginatedUsersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
 }
-func (UnimplementedUsersServer) GetUser(context.Context, *UuidMsg) (*User, error) {
+func (UnimplementedUsersServer) GetUser(context.Context, *UuidSSOMsg) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedUsersServer) CreateUser(context.Context, *CreateUserReq) (*CreateUserRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUsersServer) UpdateUser(context.Context, *UserWithUid) (*UuidMsg, error) {
+func (UnimplementedUsersServer) UpdateUser(context.Context, *UserWithUid) (*UuidSSOMsg, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUsersServer) DeleteUser(context.Context, *UuidMsg) (*EmptySSO, error) {
+func (UnimplementedUsersServer) DeleteUser(context.Context, *UuidSSOMsg) (*EmptySSO, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
@@ -903,7 +903,7 @@ func RegisterUsersServer(s grpc.ServiceRegistrar, srv UsersServer) {
 }
 
 func _Users_SearchUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchReq)
+	in := new(SearchSSOReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -915,13 +915,13 @@ func _Users_SearchUser_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Users_SearchUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).SearchUser(ctx, req.(*SearchReq))
+		return srv.(UsersServer).SearchUser(ctx, req.(*SearchSSOReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Users_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListReq)
+	in := new(ListSSOReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -933,13 +933,13 @@ func _Users_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: Users_ListUsers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).ListUsers(ctx, req.(*ListReq))
+		return srv.(UsersServer).ListUsers(ctx, req.(*ListSSOReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Users_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidSSOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -951,7 +951,7 @@ func _Users_GetUser_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: Users_GetUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).GetUser(ctx, req.(*UuidMsg))
+		return srv.(UsersServer).GetUser(ctx, req.(*UuidSSOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -993,7 +993,7 @@ func _Users_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Users_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UuidMsg)
+	in := new(UuidSSOMsg)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1005,7 +1005,7 @@ func _Users_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: Users_DeleteUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).DeleteUser(ctx, req.(*UuidMsg))
+		return srv.(UsersServer).DeleteUser(ctx, req.(*UuidSSOMsg))
 	}
 	return interceptor(ctx, in, info, handler)
 }
