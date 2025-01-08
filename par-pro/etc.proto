@@ -1,0 +1,46 @@
+syntax = "proto3";
+package protos;
+option go_package = "github.com/JMURv/par-pro/api/pb/protos";
+import "google/protobuf/timestamp.proto";
+
+message EmptyEtc {}
+
+message BannerMsg {
+  uint64 id = 1;
+  string obj_name = 2;
+  string obj_pk = 3;
+  repeated SlideMsg slides = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message SlideMsg {
+  uint64 id = 1;
+  string title = 2;
+  string description = 3;
+  string src = 4;
+  string alt = 5;
+  string button_text = 6;
+  string button_href = 7;
+  uint64 banner_id = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+service Banner {
+  rpc GetBanner(GetBannerReq) returns (BannerMsg);
+  rpc CreateBanner(BannerMsg) returns (EmptyEtc);
+  rpc UpdateBanner(CreateAndUpdateBannerReq) returns (EmptyEtc);
+  rpc DeleteBanner(GetBannerReq) returns (EmptyEtc);
+}
+
+message GetBannerReq {
+  string name = 1;
+  string pk = 2;
+}
+
+message CreateAndUpdateBannerReq {
+  string name = 1;
+  string pk = 2;
+  BannerMsg banner = 3;
+}
