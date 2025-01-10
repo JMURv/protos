@@ -5,9 +5,10 @@ package protos;
 option go_package = "github.com/JMURv/par-pro/api/pb/protos";
 import "google/protobuf/timestamp.proto";
 
-message EmptyProducts {}
-message uuidProductsMsg {string uuid = 1;}
-message slugProductsMsg {string slug = 1;}
+message Empty {}
+message uuidMsg {string uuid = 1;}
+message slugMsg {string slug = 1;}
+message uint64Msg {uint64 value = 1;}
 
 message ListReq {
   uint64 page = 1;
@@ -109,19 +110,24 @@ service Item {
   rpc ItemSearch(SearchReq) returns (PaginatedItemRes);
   rpc ItemAttrSearch(SearchReq) returns (PaginatedItemAttrsRes);
   rpc ListItems(ListReq) returns (PaginatedItemRes);
-  rpc CreateItem(ItemMsg) returns (ItemMsg);
-  rpc GetItem(uuidProductsMsg) returns (ItemMsg);
-  rpc UpdateItem(ItemWithUid) returns (ItemMsg);
-  rpc DeleteItem(uuidProductsMsg) returns (ItemMsg);
-  rpc ListRelatedItems(uuidProductsMsg) returns (RelatedItemsList);
+  rpc CreateItem(ItemMsg) returns (uuidMsg);
+  rpc GetItem(uuidMsg) returns (ItemMsg);
+  rpc UpdateItem(ItemWithUid) returns (Empty);
+  rpc DeleteItem(uuidMsg) returns (Empty);
+  rpc ListRelatedItems(uuidMsg) returns (RelatedItemsList);
   rpc listCategoryItems(listCategoryItemsReq) returns (PaginatedItemRes);
-  rpc HitItems(ListReq) returns (PaginatedItemRes);
-  rpc RecItems(ListReq) returns (PaginatedItemRes);
+  rpc ListItemsByLabel(ListItemsByLabelReq) returns (PaginatedItemRes);
+}
+
+message ListItemsByLabelReq {
+  uint32 page = 1;
+  uint32 size = 2;
+  string label = 3;
 }
 
 message listCategoryItemsReq {
-  string page = 1;
-  string size = 2;
+  uint32 page = 1;
+  uint32 size = 2;
   string sort = 3;
   string category_slug = 4;
 }
@@ -153,13 +159,13 @@ message PaginatedItemAttrsRes {
 
 service Category {
   rpc ListCategories(ListReq) returns (PaginatedCategoryRes);
-  rpc CreateCategory(CategoryMsg) returns (CategoryMsg);
+  rpc CreateCategory(CategoryMsg) returns (slugMsg);
   rpc CategorySearch(SearchReq) returns (PaginatedCategoryRes);
   rpc CategoryFiltersSearch(SearchReq) returns (PaginatedFilterRes);
-  rpc GetCategory(slugProductsMsg) returns (CategoryMsg);
-  rpc UpdateCategory(CategoryWithSlug) returns (CategoryMsg);
-  rpc DeleteCategory(slugProductsMsg) returns (EmptyProducts);
-  rpc ListCategoryFilters(slugProductsMsg) returns (FilterListRes);
+  rpc GetCategory(slugMsg) returns (CategoryMsg);
+  rpc UpdateCategory(CategoryWithSlug) returns (Empty);
+  rpc DeleteCategory(slugMsg) returns (Empty);
+  rpc ListCategoryFilters(slugMsg) returns (FilterListRes);
 }
 
 message PaginatedCategoryRes {
@@ -183,9 +189,9 @@ message PaginatedFilterRes {
 }
 
 service Favorite {
-  rpc ListFavorites(uuidProductsMsg) returns (FavoriteListMsg);
+  rpc ListFavorites(uuidMsg) returns (FavoriteListMsg);
   rpc AddToFavorites(UserAndItemIds) returns (FavoriteMsg);
-  rpc RemoveFromFavorites(UserAndItemIds) returns (EmptyProducts);
+  rpc RemoveFromFavorites(UserAndItemIds) returns (Empty);
 }
 
 message FavoriteMsg {
@@ -208,10 +214,10 @@ message UserAndItemIds {
 service Promotion {
   rpc ListPromotions(ListReq) returns (PaginatedPromoRes);
   rpc PromotionSearch(SearchReq) returns (PaginatedPromoRes);
-  rpc CreatePromotion(PromoMsg) returns (PromoMsg);
-  rpc GetPromotion(slugProductsMsg) returns (PromoMsg);
-  rpc UpdatePromotion(PromoWithSlug) returns (PromoMsg);
-  rpc DeletePromotion(slugProductsMsg) returns (EmptyProducts);
+  rpc CreatePromotion(PromoMsg) returns (slugMsg);
+  rpc GetPromotion(slugMsg) returns (PromoMsg);
+  rpc UpdatePromotion(PromoWithSlug) returns (Empty);
+  rpc DeletePromotion(slugMsg) returns (Empty);
   rpc ListPromotionItems(ListPromotionItemsReq) returns (PaginatedPromoItemsRes);
 }
 
@@ -259,6 +265,49 @@ message PaginatedPromoItemsRes {
 
 message ListPromotionItemsReq {
   string slug = 1;
-  string page = 2;
-  string size = 3;
+  uint32 page = 2;
+  uint32 size = 3;
+}
+
+service Order {
+  rpc ListOrders (ListReq) returns (PaginatedOrderRes);
+  rpc ListUserOrders (ListReq) returns (PaginatedOrderRes);
+  rpc GetOrder (uint64Msg) returns (OrderMsg);
+  rpc CreateOrder (OrderMsg) returns (uint64Msg);
+  rpc UpdateOrder (OrderMsg) returns (Empty);
+  rpc CancelOrder (uint64Msg) returns (Empty);
+}
+
+message OrderMsg {
+  uint64 id = 1;
+  string status = 2;
+  float total = 3;
+  string fio = 4;
+  string tel = 5;
+  string email = 6;
+  string address = 7;
+  string delivery = 8;
+  string payment_method = 9;
+  string user_id = 10;
+  repeated OrderItem items = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}
+
+message OrderItem {
+  uint64 id = 1;
+  uint32 quantity = 2;
+  uint64 order_id = 3;
+  string item_id = 4;
+  ItemMsg item = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message PaginatedOrderRes {
+  repeated OrderMsg data = 1;
+  int64 count = 2;
+  int64 total_pages = 3;
+  int64 current_page = 4;
+  bool has_next_page = 5;
 }
