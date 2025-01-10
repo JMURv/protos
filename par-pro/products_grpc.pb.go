@@ -1352,7 +1352,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderClient interface {
 	ListOrders(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedOrderRes, error)
-	ListUserOrders(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedOrderRes, error)
+	ListUserOrders(ctx context.Context, in *ListUserOrdersReq, opts ...grpc.CallOption) (*PaginatedOrderRes, error)
 	GetOrder(ctx context.Context, in *Uint64Msg, opts ...grpc.CallOption) (*OrderMsg, error)
 	CreateOrder(ctx context.Context, in *OrderMsg, opts ...grpc.CallOption) (*Uint64Msg, error)
 	UpdateOrder(ctx context.Context, in *OrderMsg, opts ...grpc.CallOption) (*Empty, error)
@@ -1377,7 +1377,7 @@ func (c *orderClient) ListOrders(ctx context.Context, in *ListReq, opts ...grpc.
 	return out, nil
 }
 
-func (c *orderClient) ListUserOrders(ctx context.Context, in *ListReq, opts ...grpc.CallOption) (*PaginatedOrderRes, error) {
+func (c *orderClient) ListUserOrders(ctx context.Context, in *ListUserOrdersReq, opts ...grpc.CallOption) (*PaginatedOrderRes, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PaginatedOrderRes)
 	err := c.cc.Invoke(ctx, Order_ListUserOrders_FullMethodName, in, out, cOpts...)
@@ -1432,7 +1432,7 @@ func (c *orderClient) CancelOrder(ctx context.Context, in *Uint64Msg, opts ...gr
 // for forward compatibility.
 type OrderServer interface {
 	ListOrders(context.Context, *ListReq) (*PaginatedOrderRes, error)
-	ListUserOrders(context.Context, *ListReq) (*PaginatedOrderRes, error)
+	ListUserOrders(context.Context, *ListUserOrdersReq) (*PaginatedOrderRes, error)
 	GetOrder(context.Context, *Uint64Msg) (*OrderMsg, error)
 	CreateOrder(context.Context, *OrderMsg) (*Uint64Msg, error)
 	UpdateOrder(context.Context, *OrderMsg) (*Empty, error)
@@ -1450,7 +1450,7 @@ type UnimplementedOrderServer struct{}
 func (UnimplementedOrderServer) ListOrders(context.Context, *ListReq) (*PaginatedOrderRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrders not implemented")
 }
-func (UnimplementedOrderServer) ListUserOrders(context.Context, *ListReq) (*PaginatedOrderRes, error) {
+func (UnimplementedOrderServer) ListUserOrders(context.Context, *ListUserOrdersReq) (*PaginatedOrderRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUserOrders not implemented")
 }
 func (UnimplementedOrderServer) GetOrder(context.Context, *Uint64Msg) (*OrderMsg, error) {
@@ -1505,7 +1505,7 @@ func _Order_ListOrders_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Order_ListUserOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListReq)
+	in := new(ListUserOrdersReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1517,7 +1517,7 @@ func _Order_ListUserOrders_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: Order_ListUserOrders_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServer).ListUserOrders(ctx, req.(*ListReq))
+		return srv.(OrderServer).ListUserOrders(ctx, req.(*ListUserOrdersReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -271,11 +271,17 @@ message ListPromotionItemsReq {
 
 service Order {
   rpc ListOrders (ListReq) returns (PaginatedOrderRes);
-  rpc ListUserOrders (ListReq) returns (PaginatedOrderRes);
+  rpc ListUserOrders (ListUserOrdersReq) returns (PaginatedOrderRes);
   rpc GetOrder (uint64Msg) returns (OrderMsg);
   rpc CreateOrder (OrderMsg) returns (uint64Msg);
   rpc UpdateOrder (OrderMsg) returns (Empty);
   rpc CancelOrder (uint64Msg) returns (Empty);
+}
+
+message ListUserOrdersReq {
+  string user_id = 1;
+  uint64 page = 2;
+  uint64 size = 3;
 }
 
 message OrderMsg {
