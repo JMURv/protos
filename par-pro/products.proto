@@ -60,7 +60,7 @@ message ItemMsg {
   string title = 3;
   string description = 4;
   float price = 5;
-  uint32 quantity_in_stock = 6;
+  uint64 quantity_in_stock = 6;
   string src = 7;
   string alt = 8;
   bool in_stock = 9;
@@ -312,8 +312,8 @@ message OrderItem {
 
 message PaginatedOrderRes {
   repeated OrderMsg data = 1;
-  int64 count = 2;
-  int64 total_pages = 3;
-  int64 current_page = 4;
+  uint64 count = 2;
+  uint64 total_pages = 3;
+  uint64 current_page = 4;
   bool has_next_page = 5;
 }
