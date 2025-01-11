@@ -2,7 +2,7 @@ syntax = "proto3";
 package service_discovery;
 option go_package = "github.com/JMURv/api/pb/service-discovery";
 
-message Test {}
+message Test1 {}
 message Empty {}
 
 service ServiceDiscovery {
